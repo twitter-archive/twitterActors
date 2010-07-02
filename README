@@ -1,0 +1,14 @@
+
+TwitterActors
+=============
+
+A fork of Scala (originally, 2.7.7) actor library that partially relies on 
+java.util.concurrent.* classes to avoid some problems with Scala's built-in
+copy of various concurrent classes. Notably, it is using BlockingQueue, 
+LinkedBlockingQueue, and TimeUnit from java.util.concurrent package instead of
+their private copies.
+
+In order to use this library instead of Scala actor library, import 
+com.twitter.actors.* instead of scala.actors.*.
+
+Attila Szegedi <<szegedia@gmail.com>>
