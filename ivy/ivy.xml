@@ -1,0 +1,21 @@
+<ivy-module version="1.0" xmlns:e="http://ant.apache.org/ivy/extra">
+  <info
+    organisation="com.twitter"
+    module="twitterActors"
+    revision="1.0.0"
+    e:buildpackage="com.twitter.actors"
+  />
+
+  <configurations>
+    <conf name="bootstrap" visibility="private" description="load scala compiler and libraries" />
+    <conf name="default" description="normal build" />
+    <conf name="test" visibility="private" description="build and run tests" />
+    <conf name="compile" description="something broken in specs needs this" />
+  </configurations>
+  <dependencies>
+    <!-- i guess scala-compiler.jar is needed for MainGenericRunner -->
+    <dependency org="org.scala-lang" name="scala-compiler" rev="2.7.7" />
+    <dependency org="org.scala-lang" name="scala-library" rev="2.7.7" />
+    <dependency org="org.scala-tools.testing" name="specs" rev="1.6.2.1" conf="test->*"/>
+  </dependencies>
+</ivy-module>
