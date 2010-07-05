@@ -5,7 +5,6 @@
  */
 
 package com.twitter.actors.threadpool;
-import java.util.concurrent.*;
 
 /**
  * A service that decouples the production of new asynchronous tasks

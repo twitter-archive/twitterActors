@@ -9,7 +9,7 @@ package com.twitter.actors.threadpool;
 import com.twitter.actors.threadpool.*; // for javadoc (till 6280605 is fixed)
 import java.util.List;
 import java.util.Collection;
-import java.util.concurrent.*;
+
 /**
  * An {@link Executor} that provides methods to manage termination and
  * methods that can produce a {@link Future} for tracking progress of

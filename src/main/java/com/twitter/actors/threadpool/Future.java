@@ -6,7 +6,6 @@
 
 package com.twitter.actors.threadpool;
 import com.twitter.actors.threadpool.*; // for javadoc (till 6280605 is fixed)
-import java.util.concurrent.TimeUnit;
 
 /**
  * A <tt>Future</tt> represents the result of an asynchronous

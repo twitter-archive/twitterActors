@@ -6,7 +6,7 @@
 
 package com.twitter.actors.threadpool.locks;
 
-import java.util.concurrent.*;
+import com.twitter.actors.threadpool.TimeUnit;
 
 /**
  * {@code Lock} implementations provide more extensive locking

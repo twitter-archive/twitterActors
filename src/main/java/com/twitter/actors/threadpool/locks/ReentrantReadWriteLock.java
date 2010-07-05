@@ -9,7 +9,6 @@ package com.twitter.actors.threadpool.locks;
 import java.util.HashMap;
 import com.twitter.actors.threadpool.*;
 import com.twitter.actors.threadpool.helpers.*;
-import java.util.concurrent.*;
 
 /**
  * An implementation of {@link ReadWriteLock} supporting similar

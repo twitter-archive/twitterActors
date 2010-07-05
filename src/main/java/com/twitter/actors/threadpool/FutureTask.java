@@ -8,7 +8,6 @@ package com.twitter.actors.threadpool;
 
 import com.twitter.actors.threadpool.*; // for javadoc
 import com.twitter.actors.threadpool.helpers.*;
-import java.util.concurrent.*;
 
 /**
  * A cancellable asynchronous computation.  This class provides a base

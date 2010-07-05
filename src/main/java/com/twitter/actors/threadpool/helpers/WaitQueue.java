@@ -15,7 +15,6 @@ package com.twitter.actors.threadpool.helpers;
 
 import java.util.Collection;
 import com.twitter.actors.threadpool.*;
-import java.util.concurrent.*;
 
 /**
  * Base class for internal queue classes for semaphores, etc.

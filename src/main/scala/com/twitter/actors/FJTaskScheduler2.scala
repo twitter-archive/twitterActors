@@ -11,8 +11,7 @@
 package com.twitter.actors
 
 import java.lang.{Runnable, Thread, InterruptedException, System, Runtime}
-import com.twitter.actors.threadpool.{ThreadPoolExecutor}
-import java.util.concurrent.{TimeUnit, LinkedBlockingQueue}
+import com.twitter.actors.threadpool.{ThreadPoolExecutor, TimeUnit, LinkedBlockingQueue}
 
 /**
  * FJTaskScheduler2

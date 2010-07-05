@@ -6,7 +6,7 @@
 
 package com.twitter.actors.threadpool;
 import com.twitter.actors.threadpool.*; // for javadoc (till 6280605 is fixed)
-import java.util.concurrent.*;
+
 /**
  * A {@link CompletionService} that uses a supplied {@link Executor}
  * to execute tasks.  This class arranges that submitted tasks are,

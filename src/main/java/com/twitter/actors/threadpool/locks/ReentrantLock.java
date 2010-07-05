@@ -9,7 +9,6 @@ package com.twitter.actors.threadpool.locks;
 import java.util.Collection;
 import com.twitter.actors.threadpool.*;
 import com.twitter.actors.threadpool.helpers.*;
-import java.util.concurrent.*;
 
 /**
  * A reentrant mutual exclusion {@link Lock} with the same basic
