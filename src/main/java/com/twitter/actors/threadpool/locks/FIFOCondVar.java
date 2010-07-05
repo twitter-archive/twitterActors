@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import com.twitter.actors.threadpool.*;
 import com.twitter.actors.threadpool.helpers.*;
+import java.util.concurrent.*;
 
 class FIFOCondVar extends CondVar implements Condition, java.io.Serializable {
 

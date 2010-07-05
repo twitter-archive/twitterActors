@@ -8,6 +8,7 @@ package com.twitter.actors.threadpool.locks;
 
 import com.twitter.actors.threadpool.*;
 import java.util.Date;
+import java.util.concurrent.*;
 
 /**
  * {@code Condition} factors out the {@code Object} monitor
