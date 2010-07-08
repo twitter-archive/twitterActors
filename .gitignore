@@ -1,3 +1,8 @@
 target
 dist
 twitterActors.tmproj
+project/boot/
+project/plugins/target/
+project/plugins/project/
+project/plugins/src_managed/
+lib_managed/
