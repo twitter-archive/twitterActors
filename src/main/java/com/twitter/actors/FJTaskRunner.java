@@ -817,13 +817,9 @@ public class FJTaskRunner extends Thread {
               // move all local tasks to group-wide entry queue
               for (int i = 0; i < deq.length; ++i) {
                   synchronized(group) {
-                      try {
-                          FJTask task = (FJTask)deq[i].take();
-                          if (task != null)
-                              group.getEntryQueue().put(task);
-                      } catch (InterruptedException ie) {
-                          System.err.println("Suspend: when transferring task to entryQueue: "+ie);
-                      }
+                      FJTask task = (FJTask)deq[i].take();
+                      if (task != null)
+                          group.getEntryQueue().add(task);
                   }
               }
           }

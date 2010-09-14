@@ -18,6 +18,8 @@
 
 package com.twitter.actors;
 
+import java.util.concurrent.*;
+
 /**
  * A stripped down analog of a ThreadGroup used for
  * establishing and managing FJTaskRunner threads.
@@ -125,9 +127,9 @@ public class FJTaskRunnerGroup implements IFJTaskRunnerGroup {
     /*protected*/ /*final*/ FJTaskRunner[] threads;
 
   /** Group-wide queue for tasks entered via execute() **/
-    /*protected*/ final LinkedQueue entryQueue = new LinkedQueue();
+    /*protected*/ final BlockingQueue entryQueue = new LinkedBlockingQueue();
 
-    public LinkedQueue getEntryQueue() {
+    public BlockingQueue getEntryQueue() {
         return entryQueue;
     }
 
@@ -161,7 +163,7 @@ public class FJTaskRunnerGroup implements IFJTaskRunnerGroup {
 
     /* -------- Suspending -------- */
 
-    LinkedQueue snapshot() throws InterruptedException {
+    BlockingQueue snapshot() throws InterruptedException {
         synchronized (this) {
             for (int i = 0; i < threads.length; ++i) {
                 FJTaskRunner t = threads[i];
@@ -531,14 +533,7 @@ public class FJTaskRunnerGroup implements IFJTaskRunnerGroup {
    **/
 
   public FJTask pollEntryQueue() {
-    try {
-      FJTask t = (FJTask)(entryQueue.poll(0));
-      return t;
-    }
-    catch(InterruptedException ex) { // ignore interrupts
-      Thread.currentThread().interrupt();
-      return null;
-    }
+      return (FJTask)(entryQueue.poll());
   }
 
 

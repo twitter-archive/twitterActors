@@ -11,6 +11,7 @@
 package com.twitter.actors
 
 import java.lang.{Runnable, Thread, InterruptedException}
+import java.util.concurrent.BlockingQueue
 
 /**
  * The <code>Scheduler</code> object is used by
@@ -41,7 +42,7 @@ object Scheduler extends IScheduler {
     sched = scheduler
   }
 
-  private var tasks: LinkedQueue = null
+  private var tasks: BlockingQueue[Runnable] = null
   private var pendingCount = 0
 
   /* Assumes <code>sched</code> holds an instance

@@ -1,6 +1,8 @@
 
 package com.twitter.actors;
 
+import java.util.concurrent.BlockingQueue;
+
 /**
  * IFJTaskRunnerGroup
  *
@@ -14,5 +16,5 @@ interface IFJTaskRunnerGroup {
     public void setActive(FJTaskRunner t);
     public void checkActive(FJTaskRunner t, long scans);
     public void setInactive(FJTaskRunner t);
-    public LinkedQueue getEntryQueue();
+    public BlockingQueue getEntryQueue();
 }

@@ -11,8 +11,8 @@
 package com.twitter.actors
 
 import java.lang.{Runnable, Thread, InterruptedException, System, Runtime}
-import com.twitter.actors.threadpool.{ThreadPoolExecutor}
-import java.util.concurrent.{TimeUnit, LinkedBlockingQueue}
+import com.twitter.actors.threadpool.ActorThreadPoolExecutor
+import java.util.concurrent.{TimeUnit, BlockingQueue, LinkedBlockingQueue, ThreadPoolExecutor}
 
 /**
  * FJTaskScheduler2
@@ -75,7 +75,7 @@ class FJTaskScheduler2 extends Thread with IScheduler {
   private val executor = {
     val workQueue = new LinkedBlockingQueue[Runnable]
 
-    new ThreadPoolExecutor(coreSize,
+    new ActorThreadPoolExecutor(coreSize,
                            maxSize,
                            60000L,
                            TimeUnit.MILLISECONDS,
@@ -104,22 +104,7 @@ class FJTaskScheduler2 extends Thread with IScheduler {
   private var lockupHandler: () => Unit = null
 
   private def numWorkersBlocked = {
-    executor.mainLock.lock()
-    val iter = executor.workers.iterator()
-    var numBlocked = 0
-    while (iter.hasNext()) {
-      val w = iter.next().asInstanceOf[ThreadPoolExecutor#Worker]
-      if (w.tryLock()) {
-        // worker is idle
-        w.unlock()
-      } else {
-        val s = w.thread.getState()
-        if (s == Thread.State.WAITING || s == Thread.State.TIMED_WAITING)
-          numBlocked += 1
-      }
-    }
-    executor.mainLock.unlock()
-    numBlocked
+    executor.getActiveBlockedCount();
   }
 
   override def run() {
@@ -186,10 +171,10 @@ class FJTaskScheduler2 extends Thread with IScheduler {
     terminating = true
   }
 
-  @deprecated def snapshot(): LinkedQueue = {
+  @deprecated def snapshot(): BlockingQueue[Runnable] = {
     suspending = true
-    val tasks: java.util.List[_] = executor.shutdownNow()
-    val linkedQ = new LinkedQueue
+    val tasks: java.util.List[Runnable] = executor.shutdownNow()
+    val linkedQ = new LinkedBlockingQueue[Runnable]
     val iter = tasks.iterator()
     while (iter.hasNext()) {
       linkedQ put iter.next()
