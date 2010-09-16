@@ -104,7 +104,7 @@ class FJTaskScheduler2 extends Thread with IScheduler {
   private var lockupHandler: () => Unit = null
 
   private def numWorkersBlocked = {
-    executor.getActiveBlockedCount();
+    executor.getActiveWaitingCount();
   }
 
   override def run() {

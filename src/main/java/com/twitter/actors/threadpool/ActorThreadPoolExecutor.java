@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * A subclass of {@link ThreadPoolExecutor} that can tell you approximately how
- * many of the actively executing tasks are blocked on a lock or waiting.
+ * many of the actively executing tasks are waiting; see 
+ * {@link #getActiveWaitingCount()} for details.
  * @author Attila Szegedi
  * @version $Id: $
  */
@@ -172,42 +173,33 @@ public class ActorThreadPoolExecutor extends ThreadPoolExecutor {
         setThreadFactory(threadFactory);
     }
 
-    private class ActorThreadFactory implements ThreadFactory {
-        private final ThreadFactory threadFactory;
-        
-        ActorThreadFactory(ThreadFactory threadFactory) {
-            this.threadFactory = threadFactory;
-        }
-        
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread thread = threadFactory.newThread(r);
-            threads.add(thread);
-            return thread;
-        }
-    }
-    
     @Override
-    public void setThreadFactory(ThreadFactory threadFactory) {
-        super.setThreadFactory(new ActorThreadFactory(threadFactory));
+    public void setThreadFactory(final ThreadFactory threadFactory) {
+        super.setThreadFactory(new ThreadFactory() {
+            public Thread newThread(Runnable r) {
+                Thread thread = threadFactory.newThread(r);
+                threads.add(thread);
+                return thread;
+            }
+        });
     }
     
     /**
      * Returns the approximate number of threads that are actively
-     * executing tasks, but the tasks are blocked.
+     * executing tasks, but the tasks are waiting on a monitor, sleeping, 
+     * joining another thread, or being parked.
      *
-     * @return the number of threads
+     * @return the number of waiting threads
      */
-    public int getActiveBlockedCount() {
-        int blockedCount = 0;
+    public int getActiveWaitingCount() {
+        int waitingCount = 0;
         for(Iterator<Thread> it = threads.iterator(); it.hasNext();) {
             Thread thread = it.next();
             Thread.State state = thread.getState();
             switch(state) {
                 case WAITING:
-                case TIMED_WAITING:
-                case BLOCKED: {
-                    ++blockedCount;
+                case TIMED_WAITING: {
+                    ++waitingCount;
                     break;
                 }
                 case TERMINATED: {
@@ -216,8 +208,8 @@ public class ActorThreadPoolExecutor extends ThreadPoolExecutor {
                 }
             }
         }
-        // Subtract the number of idle threads (as they're all blocked). Number
+        // Subtract the number of idle threads (as they're all waiting). Number
         // of idle threads is poolSize - activeCount.
-        return Math.max(blockedCount - (getPoolSize() - getActiveCount()), 0);
+        return Math.max(waitingCount - (getPoolSize() - getActiveCount()), 0);
     }
 }
