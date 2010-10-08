@@ -11,6 +11,7 @@
 
 package com.twitter.actors.remote
 
+import com.twitter.actors._
 
 /** <p>
  *    This object provides methods for creating, registering, and
@@ -50,7 +51,7 @@ object RemoteActor {
    * objects sent as messages.
    */
   private var cl: ClassLoader = null
-
+  private var nextKernel: Int = 0
   def classLoader: ClassLoader = cl
   def classLoader_=(x: ClassLoader) { cl = x }
 
@@ -74,10 +75,13 @@ object RemoteActor {
       kernels -= s
       // terminate `kern` when it does
       // not appear as value any more
-      if (!kernels.values.contains(kern)) {
-        Debug.info("terminating "+kern)
-        // terminate NetKernel
-        kern.terminate()
+      kernels.find(_ == kern) match {
+        case None => {
+          Debug.info("terminating "+kern)
+          // terminate NetKernel
+          kern.terminate()
+        }
+        case Some(k) => // noop
       }
     }
 
@@ -117,8 +121,15 @@ object RemoteActor {
     selfKernel.getOrCreateProxy(node, sym)
   }
 
-  private[remote] def someKernel: NetKernel =
-    kernels.values.next
+  // this is super jank
+  // but the only way I could see to get 2.7.7/2.8.0 cross build working
+  private[remote] def someKernel: NetKernel = {
+    val kernVals = kernels.values.toList
+    if (nextKernel >= kernVals.size) nextKernel = 0
+    val rv = kernVals(nextKernel)
+    nextKernel += 1
+    rv
+  }
 }
 
 

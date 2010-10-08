@@ -11,6 +11,7 @@
 
 package com.twitter.actors.remote
 
+import com.twitter.actors._
 
 import java.io.{DataInputStream, DataOutputStream, IOException}
 import java.lang.{Thread, SecurityException}

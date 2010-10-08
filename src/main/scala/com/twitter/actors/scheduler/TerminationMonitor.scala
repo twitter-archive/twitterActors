@@ -10,6 +10,7 @@
 
 package com.twitter.actors.scheduler
 
+import com.twitter.actors.Actor
 import scala.collection.mutable.HashMap
 
 private[actors] trait TerminationMonitor {

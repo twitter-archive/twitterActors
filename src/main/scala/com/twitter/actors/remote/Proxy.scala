@@ -10,6 +10,7 @@
 
 package com.twitter.actors.remote
 
+import com.twitter.actors._
 import scala.collection.mutable.HashMap
 
 /**
